@@ -1,9 +1,10 @@
 const express = require('express');
 const upload = require("express-fileupload");
-const libre = require('libreoffice-convert');
-const path = require('path');
-const fs = require("fs");
+const { docxToPdfFromPath, initIva } = require("iva-converter");
+const { writeFileSync } = require("fs");
+const { basename } = require("path");
 const port = process.env.PORT || 80;
+
 
 
 
@@ -34,24 +35,19 @@ app.post('/upload', function(req, res) {
         console.log("File Upload Failed",name,err);
         res.send("Error Occured!")
       }
-      else {
-        const extend = '.pdf'
-        const enterPath = path.join(__dirname, `/uploads/${name}`);
-        const outputPath = path.join(__dirname, `/uploads/${name}${extend}`);
-        const enterpath = fs.readFileSync(enterPath);
-
-
-        libre.convert(enterpath, extend,undefined,(err, content) => {
-            if (err) {
-              console.log(`Error converting file: ${err}`);
-            }
-            
-            fs.writeFileSync(outputPath,content);
-            res.download(outputPath);
-        });
-        
-      
+      else{
+        initIva("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWJlZjJjZDVmNmZkMDAwMjk4YjRiNGYiLCJjcmVhdGVkQXQiOjE1ODk1NzI4NzA3MTAsImlhdCI6MTU4OTU3Mjg3MH0.Oyl4XRtRsPU3PcdYyIOqBg-9Kx5rTJHT2gMnGCTpcPM");
+        const filePath = __dirname + '/uploads/' + name;
+        docxToPdfFromPath(filePath)
+          .then((pdfFile) => {
+            writeFileSync(__dirname + "/uploads/" + basename(filePath).replace(".docx", ".pdf"), pdfFile);
+            res.download(__dirname + "/uploads/" + basename(filePath).replace(".docx", ".pdf"));
+          })
+          .catch((err) => {
+            console.log(err)
+          });
       }
+
     });
   }
   else {

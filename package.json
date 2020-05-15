@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/MiodragKruscic/nodejszadatak1/issues"
   },
-  "homepage": "https://github.com/MiodragKruscic/nodejszadatak1#readme"
+  "homepage": "https://github.com/MiodragKruscic/nodejszadatak1#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.7-alpha.3",
+    "iva-converter": "^1.4.2"
+  }
 }
