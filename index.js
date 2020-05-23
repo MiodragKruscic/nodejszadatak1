@@ -19,9 +19,7 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.post('/upload', function(req, res) {
-    
-    console.log(req.files.upfile.mimetype);
-
+  
 
   if(req.files.upfile && req.files.upfile.mimetype == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"){
 

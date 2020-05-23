@@ -20,6 +20,7 @@
                 <center><input type="submit" value="DOWNLOAD" id="omg"/></center>
             </form>
         </div>
+        <div><p>Total conversions:<span id="cunt">0</span></p>></div>
         <div class="rightd">
             <form class="fileupload" action="/email" method="post" enctype="multipart/form-data" class="rightF">
                 <center><input type="text" size="30" id="kkkkk" name="textual"></center>
@@ -31,15 +32,38 @@
         document.querySelector("#omg").disabled = true;
         document.querySelector("#notomg").disabled = true;
         let button = document.querySelector("#form1");
-        console.log("Whagdsgsdgt");
+        fetch("https://jsonblob.com/api/ba9c8c7a-9d1f-11ea-9a4c-cf06e5320993").then(response => {
+            response.json().then(data=>{document.querySelector("#cunt").innerText=data.conversions})
+        })
+
+        async function postData(url = '', data = {}) {
+
+const response = await fetch(url, {
+  method: 'PUT', 
+  mode: 'cors',
+  cache: 'no-cache',
+  credentials: 'same-origin', 
+  headers: {
+    'Content-Type': 'application/json'
+    
+  },
+  redirect: 'follow', 
+  referrerPolicy: 'no-referrer', 
+  body: JSON.stringify(data) 
+});
+return response.json(); 
+}
 
         button.addEventListener("submit",()=>{
         document.querySelector("#omg").style.background="green";
+        document.querySelector("#cunt").innerText = parseInt(document.querySelector("#cunt").innerText,10)+ 1;
         document.querySelector("#omg").style.cursor="pointer";
         document.querySelector("#omg").disabled = false;
         document.querySelector("#notomg").style.cursor="pointer";
         document.querySelector("#notomg").disabled = false;
         document.querySelector("#notomg").style.background="green";
+        postData("https://jsonblob.com/api/ba9c8c7a-9d1f-11ea-9a4c-cf06e5320993",{"conversions":parseInt(document.querySelector("#cunt").innerText)})
+        
 })
     </script>
 </body>
