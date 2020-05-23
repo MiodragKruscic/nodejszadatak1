@@ -68,15 +68,15 @@ app.post('/email',function(req,res){
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "miokruscic@gmail.com", 
-      pass: process.env.PASSWORD
+      user: "muskthe7th@gmail.com", 
+      pass: "teslarocks123"
     }
   });
   const mailOptions = {
-    from: "miokruscic@gmail.com",
+    from: "muskthe7th@gmail.com",
     to: req.body.textual.toString(),
-    subject: "Ovaj pdf",
-    text: "Sves",
+    subject: "01010100 01101000 01100101 00100000 01110000 01100100 01100110 00100000 01111001 01101111 01110101 00100000 01110111 01100001 01101110 01110100 01100101 01100100 00100001",
+    text: "01000101 01101100 01101111 01101110 01100111 01100001 01110100 01100101 01100100 00100000 01001101 01110101 01110011 01101011 01110010 01100001 01110100",
     attachments: [
       {
         filename: basename(useing),
