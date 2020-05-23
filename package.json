@@ -18,8 +18,11 @@
   },
   "homepage": "https://github.com/MiodragKruscic/nodejszadatak1#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.7-alpha.3",
-    "iva-converter": "^1.4.2"
+    "iva-converter": "^1.4.2",
+    "nodemailer": "^6.4.6"
   }
 }

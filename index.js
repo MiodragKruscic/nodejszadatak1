@@ -1,19 +1,20 @@
-const express = require('express');
+const express = require("express");
 const upload = require("express-fileupload");
 const { docxToPdfFromPath, initIva } = require("iva-converter");
 const { writeFileSync } = require("fs");
 const { basename } = require("path");
+const nodemailer = require("nodemailer");
+let bodyParser = require('body-parser')
 const port = process.env.PORT || 80;
-
-
+let useing = undefined;
+require("dotenv").config();
 
 
 const app = express();
-app.use(upload())
+app.use(upload());
+app.use(bodyParser.text({defaultCharset : true}));
+app.use(express.static(__dirname + '/public'));
 
-app.get('/', function(req, res) {
-  res.sendFile(__dirname+'/index.html');
-})
 
 
 
@@ -41,7 +42,7 @@ app.post('/upload', function(req, res) {
         docxToPdfFromPath(filePath)
           .then((pdfFile) => {
             writeFileSync(__dirname + "/uploads/" + basename(filePath).replace(".docx", ".pdf"), pdfFile);
-            res.download(__dirname + "/uploads/" + basename(filePath).replace(".docx", ".pdf"));
+            useing = __dirname + "/uploads/" + basename(filePath).replace(".docx", ".pdf");
           })
           .catch((err) => {
             console.log(err)
@@ -56,7 +57,47 @@ app.post('/upload', function(req, res) {
   };
 })
 
+
+
+app.post('/download',function(req,res){
+
+     res.download(useing);
+})
+
+
+app.post('/email',function(req,res){
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "miokruscic@gmail.com", 
+      pass: process.env.PASSWORD
+    }
+  });
+  const mailOptions = {
+    from: "miokruscic@gmail.com",
+    to: req.body.textual.toString(),
+    subject: "Ovaj pdf",
+    text: "Sves",
+    attachments: [
+      {
+        filename: basename(useing),
+        path: useing.toString()
+      }
+    ]
+  }
+
+  transporter.sendMail(mailOptions,(error,info)=>{
+    if(error){
+      console.log(error);
+    }
+    else {
+      console.log("Email was sent to: " + req.body.textual.toString());
+    }
+  })
+
+})
+
 app.listen(port, () => {
-  console.log("Server trči!");
-  console.log(process.platform);
+  console.log("Server trči heheh!");
 }); 
